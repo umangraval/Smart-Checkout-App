@@ -16,7 +16,7 @@
          alt="Git">
   </a>
     <a href="https://dev-to-uploads.s3.amazonaws.com/i/2xg59r17v72yvqfb3wu5.jpg">
-    <img src="https://forthebadge.com/images/badges/made-with-javascript.svg"
+    <img src="https://forthebadge.com/images/badges/built-for-android.svg"
          alt="Javascript">
   </a>
 </p>
