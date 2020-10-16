@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:inventory/screens/sign_in.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -10,6 +12,14 @@ class _ProfilePageState extends State<ProfilePage> {
   String name = "Aashray";
   String email = "aashray.singal2018@vitstudent.ac.in";
   String number = "9876543210";
+  SharedPreferences sharedPreferences;
+  void _logout() async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SignInPage()));
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderRadius: BorderRadius.all(
                   Radius.circular(16.0),
                 )),
-                onPressed: () {},
+                onPressed: _logout,
               ),
             ),
           ],
