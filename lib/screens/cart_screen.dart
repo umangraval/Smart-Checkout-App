@@ -1,6 +1,9 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/JsonData/cartItems.dart';
 import 'package:inventory/JsonData/productDetail.dart';
+import 'package:inventory/screens/qr_scanner.dart';
+import 'package:inventory/screens/scanner_page.dart';
 import 'package:inventory/screens/student_payment_screen/order_id.dart';
 import 'package:inventory/screens/student_payment_screen/payments_screen.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -33,11 +36,21 @@ class _CartScreenState extends State<CartScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    int cartValue = CartItems.cart == null ? 0 : CartItems.cart.length;
     return Scaffold(
-      appBar: AppBar(
+     appBar: AppBar(
         title: Text('Inventory'),
-        centerTitle: true,
+    centerTitle: true,
+    elevation: 5.0,
+    leading: FlatButton(
+      child: Icon(
+        MdiIcons.arrowLeft,
+        size: 30.0,
+        color: Colors.white,
       ),
+      onPressed:() => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => QRCodeScanner())),
+    ),
+    ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: Column(

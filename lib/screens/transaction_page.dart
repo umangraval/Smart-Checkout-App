@@ -1,4 +1,8 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/JsonData/cartItems.dart';
+
+import 'cart_screen.dart';
 
 class TransactionPage extends StatefulWidget {
   @override
@@ -6,11 +10,32 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
-
   @override
   Widget build(BuildContext context) {
+    int cartValue = CartItems.cart == null ? 0 : CartItems.cart.length;
     return Scaffold(
+        appBar: AppBar(
+          title: Text('Inventory'),
+          centerTitle: true,
+          elevation: 5.0,
+          actions: [
+            Badge(
+              badgeContent: Text('$cartValue'),
+              toAnimate: true,
+              position: BadgePosition.bottomLeft(bottom: 25, left: 1),
+              shape: BadgeShape.circle,
+              padding: EdgeInsets.all(7.0),
+              badgeColor: Colors.blue,
+              child: IconButton(
+//            icon: Icon(Icons.exit_to_app),
+                icon: Icon(Icons.shopping_cart),
 
+                onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => CartScreen())),
+              ),
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.only(top: 100.0),
           child: Column(

@@ -11,6 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
   4. Payment Ready
   5. Profile Page Only need to get data
   6. All Transactions Only Need to Get Data
+  7. Update total on deletion of items in cart page
+  8. Empty Cart After Payment Completes
  */
 void main() {
   runApp(MyApp());
