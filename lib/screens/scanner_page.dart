@@ -1,9 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:inventory/JsonData/cartItems.dart';
+import 'package:inventory/JsonData/productDetail.dart';
 import 'package:inventory/encrypt.dart';
+import 'package:http/http.dart' as http;
+import 'package:inventory/screens/cart_screen.dart';
+import 'package:inventory/screens/sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScannerPage extends StatefulWidget {
+
   @override
   _ScannerPageState createState() => _ScannerPageState();
 }
@@ -11,7 +20,19 @@ class ScannerPage extends StatefulWidget {
 class _ScannerPageState extends State<ScannerPage> {
   ScanResult scanResult;
   String errorName;
-  var decrypted;
+  var url;
+  var jsonData;
+  var response;
+  ProductDetails productDetails = new ProductDetails();
+  CartItems cartItems = new CartItems();
+  var token;
+  CartScreen cartScreen = new CartScreen();
+  @override
+  void didChangeDependencies() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    token = sharedPreferences.getString("token");
+  }
+
   Future _scanQR() async {
     try {
       var qrResult = await BarcodeScanner.scan();
@@ -22,8 +43,10 @@ class _ScannerPageState extends State<ScannerPage> {
           .formatNote); // If a unknown format was scanned this field contains a note
       setState(() {
         scanResult = qrResult;
-        var content = scanResult.rawContent.replaceAll("/\n", "");
-        retrieveInfo(content);
+      });
+      var content = scanResult.rawContent.replaceAll("/\n", "");
+      retrieveInfo(content).whenComplete(() {
+        if (response.statusCode == 200) productDialog();
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
@@ -43,46 +66,150 @@ class _ScannerPageState extends State<ScannerPage> {
       });
     }
   }
-  void retrieveInfo(var encrypted){
-    decrypted = decryptAESCryptoJS(encrypted, "secret");
+
+  Future<void> retrieveInfo(var encrypted) async {
+    url = decryptAESCryptoJS(encrypted, "secret");
+    response = await http.get(Uri.encodeFull(url), headers: {
+      "x-auth-token": token,
+    });
+    jsonData = json.decode(response.body);
+
+    productDetails.name = jsonData['name'];
+    productDetails.productId = jsonData['id'];
+    productDetails.category = jsonData['category'];
+    productDetails.address = jsonData['address'];
+    productDetails.price = jsonData['price'];
+    productDetails.shop = jsonData['shop'];
+    productDetails.stockAvailable = jsonData['quantity'];
   }
+
+  Future<void> productDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          title: Text(
+            'Product Details',
+          ),
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Item   :   ${productDetails.name}',
+                  style: TextStyle(),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  'Price  :   ${productDetails.price}',
+                  style: TextStyle(),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  'Category :   ${productDetails.category}',
+                  style: TextStyle(),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  'Shop Name  :   ${productDetails.shop}',
+                  style: TextStyle(),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  'Items Available  :  ${productDetails.stockAvailable}',
+                  style: TextStyle(),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  'Shop Address  :   ${productDetails.address}',
+                  style: TextStyle(),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Add to cart',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      color: Colors.blueAccent,
+                      onPressed: () {
+//                        productDetails.cartItems.add(productDetails);
+                        CartItems.cart.add(productDetails);
+                        print("Added->  ${CartItems.cart[0].name}");
+                        scanResult = null;
+                        Navigator.of(context).pop();
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    RaisedButton(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      color: Colors.redAccent,
+                      onPressed: () {
+                        scanResult = null;
+                        Navigator.of(context).pop();
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   build(BuildContext context) {
     return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (scanResult != null)
-          Card(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  title: Text("Result Type"),
-                  subtitle: Text(scanResult.type?.toString() ?? ""),
-                ),
-                ListTile(
-                  title: Text("Raw Content"),
-                  subtitle: Text(scanResult.rawContent ?? ""),
-                ),
-                ListTile(
-                  title: Text("Format"),
-                  subtitle: Text(scanResult.format?.toString() ?? ""),
-                ),
-                ListTile(
-                  title: Text("Format note"),
-                  subtitle: Text(scanResult.formatNote ?? ""),
-                ),
-                ListTile(
-                  title: Text("Decrypted"),
-                  subtitle: Text(decrypted?? ""),
-                ),
-              ],
-            ),
-          ),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
             'Scan To Purchase',
+//            $url $jsonData ${productDetails.name}
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 25.0,
