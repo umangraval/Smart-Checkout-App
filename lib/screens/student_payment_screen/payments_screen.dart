@@ -11,17 +11,19 @@ import 'package:flutter/cupertino.dart';
 
 class PaymentsScreen extends StatefulWidget {
   final double cartTotal;
-  final String mentorName;
-  final String mentorId;
+  final String email;
+  final String sellerId;
   final String orderId;
+  final List<String> productList;
 //  final UserTimeSlot userTimeSlot;
 
   const PaymentsScreen({
     Key key,
     this.cartTotal: 2000,
-    this.mentorName: 'Alexa',
-    this.mentorId: '1337',
+    this.email: 'test@test.com',
+    this.sellerId: '1337',
     this.orderId,
+    this.productList,
 //    this.userTimeSlot,
   }) : super(key: key);
   @override
@@ -78,7 +80,7 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     log("payment has succedded");
     // Do something when payment succeeds
     capturePayment(response);
-
+    buyComplete();
     _razorpay.clear();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -112,8 +114,22 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     // Do something when an external wallet is selected
   }
 
-
-
+  void buyComplete() async {
+    Map data = {
+      "sellerid": widget.sellerId,
+      "buyeremail": widget.email,
+      "price": widget.cartTotal / 100,
+      "products": widget.productList,
+    };
+    var response = await http.post(
+        "http://ec2-13-233-229-19.ap-south-1.compute.amazonaws.com/api/transaction/add",
+        body: data);
+    if (response.statusCode == 200) {
+        print("Success");
+    } else {
+      print(response.body);
+    }
+  }
 
   @override
   void initState() {

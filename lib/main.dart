@@ -4,7 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:inventory/screens/qr_scanner.dart';
 import 'package:inventory/screens/sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+// AES  API to get logged in user information
 void main() {
   runApp(MyApp());
 }

@@ -10,17 +10,17 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   double totalValue = 1000;
-  String userName = "Aashray";
-  String userId = "1337";
+  String sellerId = "1337";
   String orderIdGenerated;
+  String email = "test@test.com";
 
   @override
   void didChangeDependencies() async{
     // TODO: implement didChangeDependencies
     OrderId orderId = OrderId(
       amount: totalValue,
-      userName: userName,
-      userId: userId,
+      userName: email,
+      userId: sellerId,
     );
     orderIdGenerated = await orderId.generateOrderId();
     super.didChangeDependencies();
@@ -172,9 +172,10 @@ class _CartScreenState extends State<CartScreen> {
                               builder: (BuildContext context) =>
                                   PaymentsScreen(
                                     cartTotal: totalValue,
-                                    mentorName: userName,
-                                    mentorId: userId,
+                                    email: email,
+                                    sellerId: sellerId,
                                     orderId: orderIdGenerated,
+                                    productList: [],
                                   ))),
                     ),
                   )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:inventory/encrypt.dart';
 
 class ScannerPage extends StatefulWidget {
   @override
@@ -8,8 +9,9 @@ class ScannerPage extends StatefulWidget {
 }
 
 class _ScannerPageState extends State<ScannerPage> {
-  ScanResult result;
+  ScanResult scanResult;
   String errorName;
+  var decrypted;
   Future _scanQR() async {
     try {
       var qrResult = await BarcodeScanner.scan();
@@ -19,7 +21,9 @@ class _ScannerPageState extends State<ScannerPage> {
       print(qrResult
           .formatNote); // If a unknown format was scanned this field contains a note
       setState(() {
-        result = qrResult;
+        scanResult = qrResult;
+        var content = scanResult.rawContent.replaceAll("/\n", "");
+        retrieveInfo(content);
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
@@ -33,32 +37,61 @@ class _ScannerPageState extends State<ScannerPage> {
       setState(() {
         errorName = "You pressed the back button before scanning anything";
       });
-    }catch(e){
+    } catch (e) {
       setState(() {
         errorName = "Unknown error: $e";
       });
     }
   }
-
+  void retrieveInfo(var encrypted){
+    decrypted = decryptAESCryptoJS(encrypted, "secret");
+  }
   @override
   build(BuildContext context) {
     return Scaffold(
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Scan To Purchase',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w700,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (scanResult != null)
+          Card(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text("Result Type"),
+                  subtitle: Text(scanResult.type?.toString() ?? ""),
                 ),
-              ),
+                ListTile(
+                  title: Text("Raw Content"),
+                  subtitle: Text(scanResult.rawContent ?? ""),
+                ),
+                ListTile(
+                  title: Text("Format"),
+                  subtitle: Text(scanResult.format?.toString() ?? ""),
+                ),
+                ListTile(
+                  title: Text("Format note"),
+                  subtitle: Text(scanResult.formatNote ?? ""),
+                ),
+                ListTile(
+                  title: Text("Decrypted"),
+                  subtitle: Text(decrypted?? ""),
+                ),
+              ],
             ),
-            Center(
-      child: Container(
+          ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Scan To Purchase',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 25.0,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        Center(
+          child: Container(
             height: MediaQuery.of(context).size.height * 0.1,
             width: MediaQuery.of(context).size.width * 0.4,
             child: RaisedButton(
@@ -92,9 +125,9 @@ class _ScannerPageState extends State<ScannerPage> {
               )),
               onPressed: _scanQR,
             ),
-      ),
-    ),
-          ],
-        ));
+          ),
+        ),
+      ],
+    ));
   }
 }
