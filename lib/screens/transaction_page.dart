@@ -113,7 +113,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                       itemCount: transactions.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        final item = transactions[index];
+                                        final item = transactions[transactions.length -1-index];
                                         var date =
                                             item['date'].substring(0, 10);
                                         return Padding(

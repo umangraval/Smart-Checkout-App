@@ -49,7 +49,7 @@ class _ScannerPageState extends State<ScannerPage> {
         scanResult = qrResult;
       });
       var content = scanResult.rawContent.replaceAll("/\n", "");
-      retrieveInfo(content).whenComplete(() {
+      retrieveInfo(scanResult.rawContent).whenComplete(() {
         if (response.statusCode == 200) {
           productDialog();
           response = null;
@@ -80,8 +80,9 @@ class _ScannerPageState extends State<ScannerPage> {
     response = await http.get(Uri.encodeFull(url), headers: {
       "x-auth-token": token,
     });
+    log('${response.statusCode}');
     jsonData = json.decode(response.body);
-
+    log('${response.body}');
     productDetails.name = jsonData['name'];
     productDetails.productId = jsonData['id'];
     productDetails.category = jsonData['category'];

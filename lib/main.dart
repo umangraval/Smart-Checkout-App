@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:inventory/screens/qr_scanner.dart';
@@ -63,16 +64,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: TypewriterAnimatedTextKit(
+      backgroundColor: Colors.white70,
+      body: Center(child: Image(image: AssetImage('images/banner.png'))),
+    );
+  }
+}
+
+/*
+TypewriterAnimatedTextKit(
           isRepeatingAnimation: true,
           speed: Duration(milliseconds: 500),
           text: ['Invento'],
           textStyle: TextStyle(
               color: Colors.white, fontSize: 75.0, fontWeight: FontWeight.bold),
         ),
-      ),
-    );
-  }
-}
+ */

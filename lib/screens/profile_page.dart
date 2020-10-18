@@ -98,6 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6))),
                           child: Container(
+                            width: MediaQuery.of(context).size.width*1,
                             decoration: BoxDecoration(
                                 border: Border(
                                     right: BorderSide(
@@ -106,18 +107,30 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Padding(
                               padding: const EdgeInsets.all(30.0),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
+                                  Text('Name',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w400,
+                                      )),
                                   Text(name,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 20.0,
+                                        fontSize: 22.0,
                                         fontWeight: FontWeight.w400,
                                       )),
                                   SizedBox(
                                     height: 16.0,
                                   ),
+                                  Text('Mobile No.',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w400,
+                                      )),
                                   Text('$number',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
@@ -127,6 +140,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   SizedBox(
                                     height: 16.0,
                                   ),
+                                  Text('Email',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w400,
+                                      )),
                                   Text(email,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
