@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:inventory/JsonData/cartItems.dart';
+import 'package:inventory/JsonData/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'razorpay_flutter.dart';
 import 'dart:developer';
 import 'dart:convert';
@@ -79,8 +82,8 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     log("payment has succedded");
     // Do something when payment succeeds
-    capturePayment(response);
     buyComplete();
+    capturePayment(response);
     _razorpay.clear();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -115,18 +118,28 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   }
 
   void buyComplete() async {
-    Map data = {
-      "sellerid": widget.sellerId,
-      "buyeremail": widget.email,
-      "price": widget.cartTotal / 100,
-      "products": widget.productList,
+    CartItems.cart.clear();
+    var jsonTags = jsonEncode(widget.productList);
+    var data = {
+      "sellerid": widget.sellerId.toString(), //"5f8b140d49d5fe001afd1128"
+      "buyeremail": widget.email,//
+      "price": (widget.cartTotal ~/ 100).toString(), // int
+      "products": widget.productList, //id
     };
+    log('$data');
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString("token");
     var response = await http.post(
         "http://ec2-13-233-229-19.ap-south-1.compute.amazonaws.com/api/transaction/add",
-        body: data);
+        body: json.encode(data),headers: {
+      "x-auth-token": token,
+      "Content-type": "application/json",
+      "Accept": "application/json",
+    });
     if (response.statusCode == 200) {
         print("Success");
     } else {
+
       print(response.body);
     }
   }
@@ -147,10 +160,10 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
       'theme.color': '#000000',
       'buttontext': "Inventory",
       'description': ' ',
-      'prefill': {
-        'contact': '',
-        'email': '',
-      }
+//      'prefill': {
+//        'contact': Profile().mobile,
+//        'email': Profile().email,
+//      }
     };
   }
 

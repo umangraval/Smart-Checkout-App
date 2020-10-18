@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../qr_scanner.dart';
 import 'razorpay_flutter.dart';
 
 class FailedPage extends StatelessWidget {
@@ -29,9 +30,10 @@ class FailedPage extends StatelessWidget {
               height: 10.0,
             ),
             RaisedButton(
-              onPressed: (){
-                Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
-              },
+//              onPressed: (){
+//                Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+//              },
+              onPressed:() => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => QRCodeScanner())),
               color: Colors.redAccent,
               textColor: Colors.white,
               child: Text('OK'),

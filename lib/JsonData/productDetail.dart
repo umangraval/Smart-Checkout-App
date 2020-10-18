@@ -6,5 +6,6 @@ class ProductDetails{
   var category;
   var stockAvailable;
   var address;
+  var sellerId;
   List<ProductDetails> cartItems;
 }

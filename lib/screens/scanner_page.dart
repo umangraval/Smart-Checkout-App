@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,10 @@ class _ScannerPageState extends State<ScannerPage> {
       });
       var content = scanResult.rawContent.replaceAll("/\n", "");
       retrieveInfo(content).whenComplete(() {
-        if (response.statusCode == 200) productDialog();
+        if (response.statusCode == 200) {
+          productDialog();
+          response = null;
+        }
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
@@ -72,6 +76,7 @@ class _ScannerPageState extends State<ScannerPage> {
 
   Future<void> retrieveInfo(var encrypted) async {
     url = decryptAESCryptoJS(encrypted, "secret");
+    log('$url');
     response = await http.get(Uri.encodeFull(url), headers: {
       "x-auth-token": token,
     });
@@ -84,6 +89,8 @@ class _ScannerPageState extends State<ScannerPage> {
     productDetails.price = jsonData['price'];
     productDetails.shop = jsonData['shop'];
     productDetails.stockAvailable = jsonData['quantity'];
+    productDetails.sellerId = jsonData['sellerid'];
+    scanResult = null;
   }
 
   Future<void> productDialog() async {
