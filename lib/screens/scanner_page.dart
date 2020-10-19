@@ -218,7 +218,7 @@ class _ScannerPageState extends State<ScannerPage> {
     cartValue = cartValue = CartItems.cart == null ? 0 : CartItems.cart.length;
     return Scaffold(
         appBar: AppBar(
-          title: Text('Inventory'),
+          title: Text('Smart Checkout'),
           centerTitle: true,
           elevation: 5.0,
           actions: [

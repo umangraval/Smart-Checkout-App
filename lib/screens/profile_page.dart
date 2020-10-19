@@ -48,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
     int cartValue = CartItems.cart == null ? 0 : CartItems.cart.length;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inventory'),
+        title: Text('Smart Checkout'),
         centerTitle: true,
         elevation: 5.0,
         actions: [
@@ -100,10 +100,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Container(
                             width: MediaQuery.of(context).size.width*1,
                             decoration: BoxDecoration(
-                                border: Border(
-                                    right: BorderSide(
-                                        color: Colors.black, width: 10),left: BorderSide(
-                                    color: Colors.black, width: 10))),
+                                // border: Border(
+                                    // right: BorderSide(
+                                        // color: Colors.black, width: 10),left: BorderSide(
+                                    // color: Colors.black, width: 10)),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(30.0),
                               child: Column(
@@ -162,39 +163,39 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 30.0,
                 ),
-                SizedBox(
-                  height: 50.0,
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  child: RaisedButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Change Password',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                        Icon(
-                          MdiIcons.lockOutline,
-                          size: 30.0,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                    color: Color(0xFF538529),
-//                color: Colors.black87,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                      Radius.circular(16.0),
-                    )),
-                    onPressed: () {},
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
+//                 SizedBox(
+//                   height: 50.0,
+//                   width: MediaQuery.of(context).size.width * 0.6,
+//                   child: RaisedButton(
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: [
+//                         Text(
+//                           'Change Password',
+//                           style: TextStyle(
+//                             color: Colors.white,
+//                             fontSize: 20.0,
+//                           ),
+//                         ),
+//                         Icon(
+//                           MdiIcons.lockOutline,
+//                           size: 30.0,
+//                           color: Colors.white,
+//                         ),
+//                       ],
+//                     ),
+//                     color: Color(0xFF538529),
+// //                color: Colors.black87,
+//                     shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.all(
+//                       Radius.circular(16.0),
+//                     )),
+//                     onPressed: () {},
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 10.0,
+//                 ),
                 SizedBox(
                   height: 50.0,
                   width: MediaQuery.of(context).size.width * 0.6,

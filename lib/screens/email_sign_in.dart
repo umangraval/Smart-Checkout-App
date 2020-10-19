@@ -100,7 +100,7 @@ class _buildEmailSignInState extends State<buildEmailSignIn> {
               focusNode: _emailFocusNode,
               decoration: InputDecoration(
                 labelText: 'Email',
-                hintText: 'test@test.com',
+                hintText: 'abc@gmail.com',
               ),
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
@@ -118,7 +118,7 @@ class _buildEmailSignInState extends State<buildEmailSignIn> {
                     focusNode: _nameFocusNode,
                     decoration: InputDecoration(
                       labelText: 'Name',
-                      hintText: 'Aashray',
+                      hintText: 'ABC',
                     ),
                     autocorrect: false,
                     keyboardType: TextInputType.name,
@@ -138,7 +138,7 @@ class _buildEmailSignInState extends State<buildEmailSignIn> {
                     focusNode: _mobileFocusNode,
                     decoration: InputDecoration(
                       labelText: 'Mobile No.',
-                      hintText: '9876543210',
+                      hintText: '8965......',
                     ),
                     autocorrect: false,
                     keyboardType: TextInputType.phone,
@@ -187,7 +187,7 @@ class _buildEmailSignInState extends State<buildEmailSignIn> {
           ),
         ),
         SizedBox(
-          height: 60.0,
+          height: 30.0,
         )
       ],
     );

@@ -52,7 +52,7 @@ class _TransactionPageState extends State<TransactionPage> {
     int cartValue = CartItems.cart == null ? 0 : CartItems.cart.length;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inventory'),
+        title: Text('Smart Checkout'),
         centerTitle: true,
         elevation: 5.0,
         actions: [
@@ -100,9 +100,9 @@ class _TransactionPageState extends State<TransactionPage> {
                           borderRadius: BorderRadius.circular(6))),
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border(
-                            right:
-                                BorderSide(color: Colors.black87, width: 10))),
+                        // border: Border(
+                            // right: BorderSide(color: Colors.black87, width: 10,)),
+                    ),
                     child: Column(
                       children: [
                         Expanded(

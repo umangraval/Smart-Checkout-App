@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:inventory/JsonData/cartItems.dart';
-import 'package:inventory/JsonData/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'razorpay_flutter.dart';
 import 'dart:developer';
@@ -154,11 +152,11 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     options = {
       'key': '$keyId', // Enter the Key ID generated from the Dashboard
       'amount': totalMoney, //in the smallest currency sub-unit.
-      'name': 'Inventory',
+      'name': 'Smart Checkout',
       'currency': "INR",
       'order_id': widget.orderId,
       'theme.color': '#000000',
-      'buttontext': "Inventory",
+      'buttontext': "Smart Checkout",
       'description': ' ',
 //      'prefill': {
 //        'contact': Profile().mobile,

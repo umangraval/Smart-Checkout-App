@@ -65,7 +65,7 @@ class _CartScreenState extends State<CartScreen> {
     int cartValue = CartItems.cart == null ? 0 : CartItems.cart.length;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inventory'),
+        title: Text('Smart Checkout'),
         centerTitle: true,
         elevation: 5.0,
         leading: FlatButton(
@@ -111,13 +111,14 @@ class _CartScreenState extends State<CartScreen> {
                     child: Container(
                       height: 100,
                       decoration: BoxDecoration(
-                          border: Border(
-                              right: BorderSide(
-                                  color: Colors.black87, width: 10))),
+                          // border: Border(
+                              // right: BorderSide(
+                                  // color: Colors.black87, width: 10)),
+                      ),
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 20, right: 110),
+                            padding: const EdgeInsets.only(top: 20, right: 11.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
