@@ -26,3 +26,7 @@
   <a href="#howto">How To Use</a> •
   <a href="#credits">Credits</a>
 </p>
+
+<h1 align="center">
+  <a href="https://github.com/umangraval/Smart-Checkout"><img src="./images/banner2.png" width=100% alt="Smart-Checkout"></a>
+</h1>
