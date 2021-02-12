@@ -26,7 +26,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Inventory"),
+        title: Text("Smart Checkout"),
         centerTitle: true,
         elevation: 3.0,
       ),
@@ -49,20 +49,20 @@ class _SignInPageState extends State<SignInPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             buildEmailSignIn(primaryText: primaryText),
-            SizedBox(
-              height: 50.0,
-              child: googleSignInButton(googleButtonText: googleButtonText),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            SizedBox(
-              height: 50.0,
-              child: facebookSigninButton(facebookButtonText: facebookButtonText),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
+            // SizedBox(
+            //   height: 50.0,
+            //   child: googleSignInButton(googleButtonText: googleButtonText),
+            // ),
+            // SizedBox(
+            //   height: 10.0,
+            // ),
+            // SizedBox(
+            //   height: 50.0,
+            //   child: facebookSigninButton(facebookButtonText: facebookButtonText),
+            // ),
+            // SizedBox(
+            //   height: 20.0,
+            // ),
             FlatButton(
               child: Text(secondaryText,
               style: TextStyle(

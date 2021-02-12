@@ -36,6 +36,10 @@ dependencies:
   http: ^0.12.2
   eventify: ^0.1.4
   razorpay_flutter: ^1.2.2
+  shared_preferences: any
+  encrypt: ^4.1.0
+  tuple: ^1.0.3
+  jwt_decoder: ^1.0.2
 
 dev_dependencies:
   flutter_test:

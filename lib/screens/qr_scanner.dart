@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:badges/badges.dart';
+import 'package:inventory/JsonData/cartItems.dart';
+import 'package:inventory/JsonData/productDetail.dart';
 import 'package:inventory/screens/cart_screen.dart';
 import 'package:inventory/screens/profile_page.dart';
 import 'package:inventory/screens/scanner_page.dart';
@@ -14,40 +16,16 @@ class QRCodeScanner extends StatefulWidget {
 
 class _QRCodeScannerState extends State<QRCodeScanner> {
   int _selectedIndex = 0;
-  final List<Widget> _children = [
-      ScannerPage(),
-      TransactionPage(),
-      ProfilePage(),
-  ];
-  int cartValue = 5;
-
   final _pageController = PageController();
   Color color = Colors.black;
-
+  final List<Widget> _children = [
+    ScannerPage(),
+    TransactionPage(),
+    ProfilePage(),
+  ];
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Inventory'),
-        centerTitle: true,
-        elevation: 5.0,
-        actions: [
-          Badge(
-            badgeContent: Text('$cartValue'),
-            toAnimate: true,
-            position: BadgePosition.bottomLeft(bottom: 25,left: 1),
-            shape: BadgeShape.circle,
-            padding: EdgeInsets.all(7.0),
-            badgeColor: Colors.blue,
-            child: IconButton(
-//            icon: Icon(Icons.exit_to_app),
-              icon: Icon(Icons.shopping_cart),
-              onPressed:() => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CartScreen())),
-            ),
-          ),
-        ],
-      ),
       body: PageView(
         pageSnapping: true,
         controller: _pageController,

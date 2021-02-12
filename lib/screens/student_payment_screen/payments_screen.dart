@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:inventory/JsonData/cartItems.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'razorpay_flutter.dart';
 import 'dart:developer';
 import 'dart:convert';
@@ -11,17 +12,19 @@ import 'package:flutter/cupertino.dart';
 
 class PaymentsScreen extends StatefulWidget {
   final double cartTotal;
-  final String mentorName;
-  final String mentorId;
+  final String email;
+  final String sellerId;
   final String orderId;
+  final List<String> productList;
 //  final UserTimeSlot userTimeSlot;
 
   const PaymentsScreen({
     Key key,
     this.cartTotal: 2000,
-    this.mentorName: 'Alexa',
-    this.mentorId: '1337',
+    this.email: 'test@test.com',
+    this.sellerId: '1337',
     this.orderId,
+    this.productList,
 //    this.userTimeSlot,
   }) : super(key: key);
   @override
@@ -77,8 +80,8 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     log("payment has succedded");
     // Do something when payment succeeds
+    buyComplete();
     capturePayment(response);
-
     _razorpay.clear();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -112,8 +115,32 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     // Do something when an external wallet is selected
   }
 
+  void buyComplete() async {
+    CartItems.cart.clear();
+    var jsonTags = jsonEncode(widget.productList);
+    var data = {
+      "sellerid": widget.sellerId.toString(), //"5f8b140d49d5fe001afd1128"
+      "buyeremail": widget.email,//
+      "price": (widget.cartTotal ~/ 100).toString(), // int
+      "products": widget.productList, //id
+    };
+    log('$data');
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var token = sharedPreferences.getString("token");
+    var response = await http.post(
+        "http://ec2-13-233-229-19.ap-south-1.compute.amazonaws.com/api/transaction/add",
+        body: json.encode(data),headers: {
+      "x-auth-token": token,
+      "Content-type": "application/json",
+      "Accept": "application/json",
+    });
+    if (response.statusCode == 200) {
+        print("Success");
+    } else {
 
-
+      print(response.body);
+    }
+  }
 
   @override
   void initState() {
@@ -125,16 +152,16 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
     options = {
       'key': '$keyId', // Enter the Key ID generated from the Dashboard
       'amount': totalMoney, //in the smallest currency sub-unit.
-      'name': 'Inventory',
+      'name': 'Smart Checkout',
       'currency': "INR",
       'order_id': widget.orderId,
       'theme.color': '#000000',
-      'buttontext': "Inventory",
+      'buttontext': "Smart Checkout",
       'description': ' ',
-      'prefill': {
-        'contact': '',
-        'email': '',
-      }
+//      'prefill': {
+//        'contact': Profile().mobile,
+//        'email': Profile().email,
+//      }
     };
   }
 
